@@ -18,10 +18,10 @@
         .label { color: #5f6368; font-size: 14px; margin-bottom: 10px; }
 
         .amount-row { display: flex; align-items: flex-start; }
-        .amount-val { font-size: 34px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+        .amount-val { font-size: 34px; font-weight: 500; display: flex; align-items: center; gap: 10px; }
         
-        /* Exact Green Scalloped Tick */
-        .green-tick-svg { width: 20px; height: 20px; fill: #34a853; }
+        /* Bada Green Tick */
+        .green-tick-svg { width: 28px; height: 28px; fill: #34a853; }
         
         .amount-text { color: #202124; font-size: 15px; margin-top: 5px; }
         
@@ -37,8 +37,8 @@
         
         .name-line { font-size: 18px; font-weight: 600; line-height: 1.4; color: #202124; display: flex; align-items: center; }
         
-        /* Exact Blue Tick */
-        .blue-tick { width: 18px; height: 18px; margin-left: 5px; fill: #1d9bf0; }
+        /* Bada Blue Tick */
+        .blue-tick { width: 24px; height: 24px; margin-left: 5px; fill: #1d9bf0; }
         
         .bank-line { color: #5f6368; font-size: 14px; margin-top: 5px; }
 
@@ -47,16 +47,24 @@
         .avatar-to { width: 50px; height: 50px; border-radius: 50%; background: #e0f2f1; color: #000; font-weight: 600; display: flex; align-items: center; justify-content: center; }
         .avatar-from { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
 
+        /* From Section Edit Button */
+        .edit-from-btn { background: none; border: none; color: #1a73e8; font-size: 14px; font-weight: 500; cursor: pointer; padding: 0; margin-top: 10px; display: inline-block; }
+        
         .footer-details { padding: 20px; border-bottom: 1px solid #f1f3f4; font-size: 14px; color: #202124; line-height: 2; }
         .footer-details a { color: #1a73e8; text-decoration: none; font-weight: 500; margin-left: 5px; cursor: pointer; }
         
+        /* Payment Details Styling */
+        .payment-details { color: #1a73e8; font-weight: 600; font-size: 15px; margin-top: 15px; display: block; cursor: pointer; }
+        .payment-details i { margin-left: 5px; font-size: 12px; }
+
         .footer-logos { text-align: center; padding: 20px; font-size: 12px; color: #5f6368; display: flex; justify-content: center; align-items: center; gap: 10px; }
         .upi-bold { font-weight: bold; color: #202124; }
 
-        #editForm { display: none; background: #f8f9fa; padding: 15px; margin-top: 15px; border-radius: 8px; }
-        #editForm label { display: block; font-size: 13px; color: #5f6368; margin-bottom: 5px; }
-        #editForm input { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        #editForm button { background: #1a73e8; color: #fff; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
+        /* Hidden Edit Form for From section */
+        #editFromForm { display: none; background: #f8f9fa; padding: 15px; margin-top: 15px; border-radius: 8px; }
+        #editFromForm label { display: block; font-size: 13px; color: #5f6368; margin-bottom: 5px; }
+        #editFromForm input { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        #editFromForm button { background: #1a73e8; color: #fff; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -67,67 +75,44 @@
         <div class="header-actions">Share Help</div>
     </div>
 
+    <!-- Fixed Top Section (Screenshot Jaisa) -->
     <div class="section">
         <div class="label">Amount</div>
         <div class="amount-row">
-            <div class="amount-val" id="amountValue">₹100 
-                <!-- Exact Green Scalloped Tick -->
+            <div class="amount-val">₹100 
                 <svg class="green-tick-svg" viewBox="0 0 24 24"><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.238 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-11 4.5l-3.5-3.5 1.41-1.41 2.09 2.08 4.59-4.59 1.41 1.41-6 6z"/></svg>
             </div>
         </div>
-        <div class="amount-text" id="amountWords">Rupees One Hundred Only</div>
-        <div class="chip" id="txnCode">C8QsR9 <i class="fa-regular fa-copy"></i></div>
+        <div class="amount-text">Rupees One Hundred Only</div>
+        <div class="chip">GEUqn0 <i class="fa-regular fa-copy"></i></div>
         <div class="btn-row">
             <button class="btn-green"><i class="fa-solid fa-money-bill-wave"></i> Money Transfer</button>
-            <span class="edit-link" onclick="toggleEdit()">Edit</span>
-        </div>
-
-        <div id="editForm">
-            <label>Amount (₹)</label>
-            <input type="text" id="amountInput" placeholder="100">
-            <label>Amount in Words</label>
-            <input type="text" id="amountWordsInput" placeholder="Rupees One Hundred Only">
-            <label>Transaction Code (C8QsR9)</label>
-            <input type="text" id="codeInput" placeholder="C8QsR9">
-            
-            <!-- Time box removed, Ab ye automatic rahega -->
-            
-            <label>To ka Naam (Alag lines ke liye comma use karein)</label>
-            <input type="text" id="toNameInput" placeholder="Nasima, Mohammedsabir, Mulla">
-            <label>To Bank Details</label>
-            <input type="text" id="toBankInput" placeholder="Union Bank Of India - 8980">
-            <label>From Naam</label>
-            <input type="text" id="fromNameInput" placeholder="Habibul Islam">
-            <label>From UPI ID</label>
-            <input type="text" id="fromUpiInput" placeholder="7578067288@ptyes">
-            <label>From Bank Details</label>
-            <input type="text" id="fromBankInput" placeholder="Canara Bank - 6161">
-            <button onclick="saveEdit()">Save Changes</button>
+            <span class="edit-link">Edit</span>
         </div>
     </div>
 
+    <!-- To Section (Fixed) -->
     <div class="section">
         <div class="label">To</div>
         <div class="card-row">
             <div class="details-left">
-                <div class="name-line" id="toName1">Nasima</div>
-                <div class="name-line" id="toName2">Mohammedsabir</div>
-                <div class="name-line" id="toName3">Mulla 
-                    <!-- Exact Blue Tick -->
+                <div class="name-line">Rabijul Hussain</div>
+                <div class="name-line">Laskar 
                     <svg class="blue-tick" viewBox="0 0 24 24"><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.238 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-11 4.5l-3.5-3.5 1.41-1.41 2.09 2.08 4.59-4.59 1.41 1.41-6 6z"/></svg>
                 </div>
-                <div class="bank-line" id="toBank">Union Bank Of India - 8980</div>
+                <div class="bank-line">Union Bank Of India - 1667</div>
                 <div class="button-row" style="display:flex;">
                     <button class="outline-btn">Pay Again</button>
                     <button class="outline-btn">View History</button>
                 </div>
             </div>
             <div class="details-right">
-                <div class="avatar-to">NM</div>
+                <div class="avatar-to">RL</div>
             </div>
         </div>
     </div>
 
+    <!-- From Section (Editable) -->
     <div class="section">
         <div class="label">From</div>
         <div class="card-row">
@@ -135,6 +120,20 @@
                 <div class="name-line" id="fromName">Habibul Islam</div>
                 <div class="bank-line" id="fromUpi">UPI ID: 7578067288@ptyes</div>
                 <div class="bank-line" id="fromBank">Canara Bank - 6161</div>
+                
+                <!-- Sirf 'From' wale section ka Edit Button -->
+                <button class="edit-from-btn" onclick="toggleEditFrom()">Edit Info</button>
+                
+                <!-- Hidden form for From section -->
+                <div id="editFromForm">
+                    <label>Naam</label>
+                    <input type="text" id="inputFromName" placeholder="Habibul Islam">
+                    <label>UPI ID</label>
+                    <input type="text" id="inputFromUpi" placeholder="7578067288@ptyes">
+                    <label>Bank Details</label>
+                    <input type="text" id="inputFromBank" placeholder="Canara Bank - 6161">
+                    <button onclick="saveEditFrom()">Save</button>
+                </div>
             </div>
             <div class="details-right">
                 <img src="https://ui-avatars.com/api/?name=HI&background=e0f2f1&color=00695c" class="avatar-from" id="fromAvatar">
@@ -142,9 +141,13 @@
         </div>
     </div>
 
+    <!-- Footer Details -->
     <div class="footer-details">
-        Paid at: <span id="paidTime">Loading...</span><br>
-        UPI Ref No: <span id="utrNumber">313049523266</span> <a href="#">Copy</a>
+        Paid at: <span id="paidTime">06:46 PM, 20 Aug 2026</span><br>
+        UPI Ref No: <span id="utrNumber">312876124564</span> <a href="#">Copy</a>
+        
+        <!-- Payment Details Dropdown -->
+        <div class="payment-details">Payment Details <i class="fa-solid fa-chevron-down"></i></div>
     </div>
 
     <div class="footer-logos">
@@ -153,7 +156,7 @@
 </div>
 
 <script>
-    // Automation: Random 12 digit UTR aur Exact current time generate karne ka function
+    // Automation: Random 12 digit UTR aur Time auto-update
     function generateRandomDigits(length) {
         let result = '';
         for(let i = 0; i < length; i++) {
@@ -174,49 +177,29 @@
         return strTime;
     }
 
-    // Page load hote hi UTR aur Time dono automatic update ho jayenge
     window.onload = function() {
         document.getElementById('utrNumber').innerText = generateRandomDigits(12);
         document.getElementById('paidTime').innerText = updateTime();
     };
 
-    function toggleEdit() {
-        var form = document.getElementById('editForm');
+    // From Section Edit Functions
+    function toggleEditFrom() {
+        var form = document.getElementById('editFromForm');
         if (form.style.display === 'block') {
             form.style.display = 'none';
         } else {
-            // Editing data pre-fill karna
-            document.getElementById('amountInput').value = document.getElementById('amountValue').innerText.replace('₹', '').trim();
-            document.getElementById('amountWordsInput').value = document.getElementById('amountWords').innerText;
-            document.getElementById('codeInput').value = document.getElementById('txnCode').innerText.trim();
-            
-            var names = document.getElementById('toName1').innerText + ',' + document.getElementById('toName2').innerText + ',' + document.getElementById('toName3').innerText;
-            document.getElementById('toNameInput').value = names;
-            document.getElementById('toBankInput').value = document.getElementById('toBank').innerText;
-            document.getElementById('fromNameInput').value = document.getElementById('fromName').innerText;
-            document.getElementById('fromUpiInput').value = document.getElementById('fromUpi').innerText.replace('UPI ID: ', '');
-            document.getElementById('fromBankInput').value = document.getElementById('fromBank').innerText;
-            
+            document.getElementById('inputFromName').value = document.getElementById('fromName').innerText;
+            document.getElementById('inputFromUpi').value = document.getElementById('fromUpi').innerText.replace('UPI ID: ', '');
+            document.getElementById('inputFromBank').value = document.getElementById('fromBank').innerText;
             form.style.display = 'block';
         }
     }
 
-    function saveEdit() {
-        document.getElementById('amountValue').innerHTML = '₹' + (document.getElementById('amountInput').value || '100') + ' <svg class="green-tick-svg" viewBox="0 0 24 24"><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.238 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-11 4.5l-3.5-3.5 1.41-1.41 2.09 2.08 4.59-4.59 1.41 1.41-6 6z"/></svg>';
-        document.getElementById('amountWords').innerText = document.getElementById('amountWordsInput').value || 'Rupees One Hundred Only';
-        document.getElementById('txnCode').innerHTML = (document.getElementById('codeInput').value || 'C8QsR9') + ' <i class="fa-regular fa-copy"></i>';
-
-        var names = document.getElementById('toNameInput').value.split(',');
-        document.getElementById('toName1').innerText = names[0] || 'Nasima';
-        document.getElementById('toName2').innerText = names[1] || 'Mohammedsabir';
-        document.getElementById('toName3').innerHTML = (names[2] || 'Mulla') + ' <svg class="blue-tick" viewBox="0 0 24 24"><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.238 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-11 4.5l-3.5-3.5 1.41-1.41 2.09 2.08 4.59-4.59 1.41 1.41-6 6z"/></svg>';
-        
-        document.getElementById('toBank').innerText = document.getElementById('toBankInput').value || 'Union Bank Of India - 8980';
-        document.getElementById('fromName').innerText = document.getElementById('fromNameInput').value || 'Habibul Islam';
-        document.getElementById('fromUpi').innerText = 'UPI ID: ' + (document.getElementById('fromUpiInput').value || '7578067288@ptyes');
-        document.getElementById('fromBank').innerText = document.getElementById('fromBankInput').value || 'Canara Bank - 6161';
-
-        toggleEdit();
+    function saveEditFrom() {
+        document.getElementById('fromName').innerText = document.getElementById('inputFromName').value || 'Habibul Islam';
+        document.getElementById('fromUpi').innerText = 'UPI ID: ' + (document.getElementById('inputFromUpi').value || '7578067288@ptyes');
+        document.getElementById('fromBank').innerText = document.getElementById('inputFromBank').value || 'Canara Bank - 6161';
+        toggleEditFrom();
     }
 </script>
 </body>
