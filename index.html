@@ -2,252 +2,169 @@ index.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UPI Payment Receipt Editor</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Receipt Editor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #f0f2f5; min-height: 100vh; padding: 24px; display: flex; align-items: center; justify-content: center; }
-        .app-wrapper { max-width: 1380px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
-        @media (max-width: 1024px) { .app-wrapper { grid-template-columns: 1fr; gap: 28px; } }
-        .form-panel { background: #ffffff; border-radius: 24px; padding: 28px 30px 34px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08); border: 1px solid rgba(0, 0, 0, 0.04); position: sticky; top: 24px; }
-        .form-panel h2 { font-size: 20px; font-weight: 700; color: #1a1a2e; margin-bottom: 6px; letter-spacing: -0.3px; }
-        .form-panel .subtitle { font-size: 14px; color: #6b7280; margin-bottom: 22px; border-bottom: 1px solid #eef2f6; padding-bottom: 16px; }
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; }
-        @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; gap: 14px; } .form-panel { padding: 20px 18px 24px; } }
-        .form-group { display: flex; flex-direction: column; gap: 4px; }
-        .form-group.full-width { grid-column: 1 / -1; }
-        .form-group label { font-size: 12px; font-weight: 600; color: #4b5563; text-transform: uppercase; letter-spacing: 0.4px; display: flex; align-items: center; gap: 4px; }
-        .form-group label .label-icon { font-size: 14px; }
-        .form-group input, .form-group textarea { font-family: 'Inter', sans-serif; font-size: 14px; padding: 10px 14px; border: 1.5px solid #e5e7eb; border-radius: 12px; background: #fafbfc; transition: border-color 0.2s, box-shadow 0.2s; color: #1f2937; width: 100%; }
-        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); background: #ffffff; }
-        .form-group input::placeholder { color: #9ca3af; }
-        .form-group textarea { resize: vertical; min-height: 48px; line-height: 1.5; }
-        .form-group .char-hint { font-size: 11px; color: #9ca3af; margin-top: 2px; }
-        .checkbox-row { display: flex; flex-wrap: wrap; gap: 16px 28px; padding-top: 6px; }
-        .checkbox-row label { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: #1f2937; text-transform: none; letter-spacing: 0; cursor: pointer; }
-        .checkbox-row input[type="checkbox"] { width: 18px; height: 18px; accent-color: #22c55e; cursor: pointer; border-radius: 4px; }
-        .form-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; padding-top: 18px; border-top: 1px solid #eef2f6; }
-        .btn { display: inline-flex; align-items: center; gap: 8px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; padding: 10px 20px; border: none; border-radius: 12px; cursor: pointer; transition: all 0.2s; text-decoration: none; background: #f3f4f6; color: #1f2937; }
-        .btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); }
-        .btn:active { transform: translateY(0); }
-        .btn-primary { background: #1a1a2e; color: #fff; }
-        .btn-primary:hover { background: #2d2d4a; }
-        .btn-success { background: #22c55e; color: #fff; }
-        .btn-success:hover { background: #16a34a; }
-        .btn-outline { background: transparent; border: 1.5px solid #e5e7eb; }
-        .btn-outline:hover { background: #f9fafb; border-color: #d1d5db; }
-        .btn-danger-outline { background: transparent; border: 1.5px solid #fecaca; color: #dc2626; }
-        .btn-danger-outline:hover { background: #fef2f2; }
-        .btn .icon { font-size: 18px; line-height: 1; }
-        .preview-panel { display: flex; flex-direction: column; gap: 16px; }
-        .preview-panel .preview-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-        .preview-panel .preview-header h3 { font-size: 18px; font-weight: 600; color: #1a1a2e; }
-        .preview-panel .preview-header .badge { font-size: 12px; font-weight: 600; color: #6b7280; background: #f3f4f6; padding: 4px 14px; border-radius: 20px; letter-spacing: 0.3px; }
-        .receipt-card { background: #ffffff; border-radius: 24px; padding: 28px 30px 26px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08); border: 1px solid rgba(0, 0, 0, 0.04); transition: all 0.2s; max-width: 520px; width: 100%; margin: 0 auto; }
-        @media (max-width: 600px) { .receipt-card { padding: 20px 18px 20px; border-radius: 18px; } }
-        .receipt-status { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
-        .receipt-status .check-icon { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: #22c55e; border-radius: 50%; color: #fff; font-size: 20px; flex-shrink: 0; }
-        .receipt-status .status-text { font-size: 20px; font-weight: 700; color: #1a1a2e; letter-spacing: -0.3px; }
-        .receipt-amount { margin: 4px 0 2px; }
-        .receipt-amount .amount-number { font-size: 40px; font-weight: 700; color: #1a1a2e; letter-spacing: -1px; line-height: 1.1; }
-        .receipt-amount .amount-number .currency-symbol { font-size: 32px; margin-right: 2px; }
-        .receipt-amount .amount-words { font-size: 15px; color: #6b7280; font-weight: 500; margin-top: 2px; }
-        .receipt-tx-code { display: flex; align-items: center; gap: 10px; margin: 12px 0 14px; padding: 8px 14px 8px 18px; background: #f8fafc; border-radius: 12px; border: 1px solid #eef2f6; width: fit-content; }
-        .receipt-tx-code .code { font-size: 18px; font-weight: 600; color: #1a1a2e; letter-spacing: 0.5px; font-family: 'Inter', monospace; }
-        .receipt-tx-code .copy-btn { background: transparent; border: none; font-size: 18px; cursor: pointer; padding: 4px 6px; border-radius: 6px; transition: background 0.2s; color: #6b7280; }
-        .receipt-tx-code .copy-btn:hover { background: #e5e7eb; }
-        .receipt-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; }
-        .receipt-tags .tag { font-size: 12px; font-weight: 600; padding: 4px 16px; border-radius: 20px; letter-spacing: 0.3px; background: #f3f4f6; color: #4b5563; }
-        .receipt-tags .tag.tag-blue { background: #dbeafe; color: #1d4ed8; }
-        .receipt-tags .tag.tag-green { background: #dcfce7; color: #15803d; }
-        .receipt-divider { border: none; border-top: 1.5px dashed #e5e7eb; margin: 14px 0 16px; }
-        .receipt-section { display: flex; flex-direction: column; gap: 2px; margin-bottom: 14px; }
-        .receipt-section:last-of-type { margin-bottom: 0; }
-        .receipt-section .section-label { font-size: 12px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; }
-        .receipt-section .section-value { font-size: 16px; font-weight: 600; color: #1a1a2e; display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; }
-        .receipt-section .section-value .bank-name { font-weight: 500; color: #4b5563; font-size: 14px; }
-        .receipt-section .section-value .heart { color: #ef4444; }
-        .receipt-section .section-value .upi-id { font-family: 'Inter', monospace; font-weight: 500; color: #3b82f6; font-size: 14px; background: #eff6ff; padding: 2px 12px; border-radius: 6px; }
-        .receipt-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 16px; }
-        .receipt-actions .btn-sm { font-size: 13px; font-weight: 600; padding: 6px 18px; border-radius: 20px; border: none; cursor: pointer; background: #f3f4f6; color: #1f2937; transition: all 0.2s; font-family: 'Inter', sans-serif; }
-        .receipt-actions .btn-sm:hover { background: #e5e7eb; }
-        .receipt-actions .btn-sm.btn-sm-primary { background: #1a1a2e; color: #fff; }
-        .receipt-actions .btn-sm.btn-sm-primary:hover { background: #2d2d4a; }
-        .receipt-actions .btn-sm.btn-sm-outline { background: transparent; border: 1.5px solid #e5e7eb; }
-        .receipt-actions .btn-sm.btn-sm-outline:hover { background: #f9fafb; }
-        .receipt-footer { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 16px; margin-top: 14px; padding-top: 14px; border-top: 1px solid #eef2f6; }
-        .receipt-footer .date-time { font-size: 13px; color: #6b7280; font-weight: 500; }
-        .receipt-footer .ref-row { display: flex; align-items: center; gap: 8px; }
-        .receipt-footer .ref-row .ref-label { font-size: 12px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.3px; }
-        .receipt-footer .ref-row .ref-value { font-size: 14px; font-weight: 600; color: #1a1a2e; font-family: 'Inter', monospace; }
-        .receipt-footer .ref-row .copy-btn { background: transparent; border: none; font-size: 16px; cursor: pointer; padding: 2px 6px; border-radius: 4px; transition: background 0.2s; color: #6b7280; }
-        .receipt-footer .ref-row .copy-btn:hover { background: #e5e7eb; }
-        .receipt-share-help { display: flex; gap: 16px; margin-top: 14px; padding-top: 12px; border-top: 1px solid #eef2f6; }
-        .receipt-share-help .link-btn { font-size: 14px; font-weight: 600; color: #3b82f6; background: transparent; border: none; cursor: pointer; padding: 4px 8px; border-radius: 8px; transition: background 0.2s; font-family: 'Inter', sans-serif; }
-        .receipt-share-help .link-btn:hover { background: #eff6ff; }
-        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1a1a2e; color: #fff; padding: 12px 28px; border-radius: 14px; font-size: 14px; font-weight: 500; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25); opacity: 0; transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1); pointer-events: none; z-index: 999; font-family: 'Inter', sans-serif; }
-        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-        @media (max-width: 480px) { .receipt-amount .amount-number { font-size: 32px; } .receipt-amount .amount-number .currency-symbol { font-size: 26px; } .receipt-tx-code .code { font-size: 15px; } .receipt-footer { flex-direction: column; align-items: flex-start; } .form-panel { padding: 16px 14px 20px; } .form-panel h2 { font-size: 17px; } .btn { font-size: 13px; padding: 8px 16px; } }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f1f3f4; margin: 0; padding: 0; display: flex; justify-content: center; }
+        .app-container { background-color: #fff; width: 100%; max-width: 450px; min-height: 100vh; box-shadow: 0 0 10px rgba(0,0,0,0.1); padding-bottom: 20px;}
+        
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #eee; }
+        .header-title { font-size: 18px; font-weight: 500; color: #202124; }
+        .header-actions { display: flex; gap: 15px; color: #1a73e8; font-weight: 500; font-size: 14px; }
+
+        .card { padding: 20px; border-bottom: 8px solid #f1f3f4; }
+        .label { color: #5f6368; font-size: 14px; margin-bottom: 10px; }
+
+        /* Payment Section */
+        .amount-row { display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
+        .amount-row h1 { font-size: 36px; margin: 0; font-weight: 500; }
+        .green-check { color: #34a853; font-size: 20px; }
+        .chip { display: inline-flex; align-items: center; background: #f1f3f4; padding: 8px 12px; border-radius: 20px; font-size: 14px; border: 1px solid #dadce0; margin-bottom: 15px; }
+        .button-row { display: flex; align-items: center; gap: 15px; }
+        .btn-green { background: #e6f4ea; color: #188038; border: none; padding: 10px 15px; border-radius: 20px; font-weight: 500; cursor: pointer; }
+        
+        /* User Card */
+        .user-row { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+        .avatar-frame { width: 55px; height: 55px; border-radius: 50%; overflow: hidden; border: 2px solid #1a73e8; padding: 2px; background: #fff; }
+        .avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: #e0f2f1; }
+        .name { font-size: 18px; font-weight: 600; color: #202124; display: flex; align-items: center; gap: 5px; margin-bottom: 3px; }
+        .blue-check { color: #1a73e8; font-size: 16px; display: inline-block; }
+        .bank-details { color: #5f6368; font-size: 14px; margin-bottom: 3px; }
+        
+        /* Edit Feature Styles */
+        .edit-controls { margin-top: 10px; }
+        .btn-edit { border: 1px solid #dadce0; background: #fff; color: #202124; padding: 6px 15px; border-radius: 20px; cursor: pointer; font-size: 14px; margin-right: 8px; }
+        .btn-save { background: #1a73e8; border: none; color: #fff; padding: 6px 15px; border-radius: 20px; cursor: pointer; font-size: 14px; }
+        .edit-form { margin-top: 15px; background: #f8f9fa; padding: 15px; border-radius: 10px; display: none; }
+        .edit-form label { display: block; margin-bottom: 5px; font-size: 13px; color: #5f6368; }
+        .edit-form input { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #dadce0; border-radius: 5px; box-sizing: border-box; }
+        
+        /* Toggle Blue Tick Button */
+        .tick-toggle { background: #e8f0fe; border: none; color: #1a73e8; padding: 5px 10px; border-radius: 15px; font-size: 12px; cursor: pointer; margin-left: 10px; }
+
+        .footer { text-align: center; padding: 20px; font-size: 12px; color: #5f6368; }
     </style>
 </head>
 <body>
-    <div id="toast" class="toast"></div>
-    <div class="app-wrapper">
-        <div class="form-panel">
-            <h2>✏️ Edit Receipt</h2>
-            <div class="subtitle">All fields update the preview in real time</div>
-            <form id="editForm" class="form-grid" autocomplete="off">
-                <div class="form-group">
-                    <label><span class="label-icon">₹</span> Amount</label>
-                    <input type="text" id="amount" value="100" />
-                </div>
-                <div class="form-group">
-                    <label><span class="label-icon">📝</span> Amount in Words</label>
-                    <input type="text" id="amountWords" value="Rupees One Hundred Only" />
-                </div>
-                <div class="form-group">
-                    <label><span class="label-icon">🔑</span> Transaction Code</label>
-                    <input type="text" id="txCode" value="C8QsR9" />
-                </div>
-                <div class="form-group">
-                    <label><span class="label-icon">👤</span> Recipient Name</label>
-                    <input type="text" id="recipientName" value="Nasima Mohammedsabir Mulla ❤️" />
-                </div>
-                <div class="form-group full-width">
-                    <label><span class="label-icon">🏦</span> Recipient Bank</label>
-                    <input type="text" id="recipientBank" value="Union Bank Of India - 8980" />
-                </div>
-                <div class="form-group">
-                    <label><span class="label-icon">👤</span> Sender Name</label>
-                    <input type="text" id="senderName" value="Habibul Islam" />
-                </div>
-                <div class="form-group">
-                    <label><span class="label-icon">📱</span> UPI ID</label>
-                    <input type="text" id="upiId" value="7578067288@ptyes" />
-                </div>
-                <div class="form-group full-width">
-                    <label><span class="label-icon">🏦</span> Sender Bank</label>
-                    <input type="text" id="senderBank" value="Canara Bank - 6161 🏦" />
-                </div>
-                <div class="form-group">
-                    <label><span class="label-icon">🕐</span> Time</label>
-                    <input type="text" id="time" value="09:12 AM" />
-                </div>
-                <div class="form-group">
-                    <label><span class="label-icon">📅</span> Date</label>
-                    <input type="text" id="date" value="23 Aug 2026" />
-                </div>
-                <div class="form-group full-width">
-                    <label><span class="label-icon">🔢</span> UPI Reference No</label>
-                    <input type="text" id="upiRef" value="313049523266" />
-                </div>
-                <div class="form-group full-width">
-                    <div class="checkbox-row">
-                        <label>
-                            <input type="checkbox" id="showMoneyTransfer" checked />
-                            Show "Money Transfer" tag
-                        </label>
-                        <label>
-                            <input type="checkbox" id="showEdit" checked />
-                            Show "Edit" tag
-                        </label>
-                    </div>
-                </div>
-                <div class="form-actions full-width">
-                    <button type="button" class="btn btn-success" id="resetBtn">
-                        <span class="icon">↺</span> Reset Defaults
-                    </button>
-                    <button type="button" class="btn btn-primary" id="copyReceiptBtn">
-                        <span class="icon">📋</span> Copy Receipt Text
-                    </button>
-                    <button type="button" class="btn btn-outline" id="printBtn">
-                        <span class="icon">🖨️</span> Print
-                    </button>
-                </div>
-            </form>
+
+<div class="app-container">
+    <div class="header">
+        <i class="fa-solid fa-arrow-left" style="color: #202124;"></i>
+        <div class="header-title">Sent Successfully</div>
+        <div class="header-actions">Share Help</div>
+    </div>
+
+    <div class="card">
+        <div class="label">Amount</div>
+        <div class="amount-row"><h1>₹100</h1> <i class="fa-solid fa-circle-check green-check"></i></div>
+        <div class="amount-words">Rupees One Hundred Only</div>
+        <div class="chip">C8QsR9 <i class="fa-regular fa-copy"></i></div>
+        <div class="button-row"><button class="btn-green">Money Transfer</button> <a href="#" style="color:#1a73e8; text-decoration:none; font-weight:500;">Edit</a></div>
+    </div>
+
+    <!-- To Section (Editable) -->
+    <div class="card">
+        <div class="label">To</div>
+        <div class="user-row">
+            <div class="avatar-frame"><img src="https://ui-avatars.com/api/?name=NM&background=e0f2f1&color=00695c" class="avatar" id="toAvatar"></div>
+            <div>
+                <div class="name" id="toName">Nasima Mohammedsabir Mulla <i class="fa-solid fa-circle-check blue-check" id="toTick"></i></div>
+                <div class="bank-details" id="toBank">Union Bank Of India - 8980</div>
+            </div>
         </div>
-        <div class="preview-panel">
-            <div class="preview-header">
-                <h3>📄 Live Preview</h3>
-                <span class="badge">UPI Receipt</span>
-            </div>
-            <div class="receipt-card" id="receiptCard">
-                <div class="receipt-status">
-                    <span class="check-icon">✓</span>
-                    <span class="status-text">Sent Successfully</span>
-                </div>
-                <div class="receipt-amount">
-                    <div class="amount-number">
-                        <span class="currency-symbol">₹</span><span id="previewAmount">100</span>
-                    </div>
-                    <div class="amount-words" id="previewAmountWords">Rupees One Hundred Only</div>
-                </div>
-                <div class="receipt-tx-code">
-                    <span class="code" id="previewTxCode">C8QsR9</span>
-                    <button class="copy-btn" id="copyTxCodeBtn" title="Copy transaction code">📋</button>
-                </div>
-                <div class="receipt-tags" id="previewTags">
-                    <span class="tag tag-blue" id="tagMoneyTransfer">Money Transfer</span>
-                    <span class="tag tag-green" id="tagEdit">Edit</span>
-                </div>
-                <hr class="receipt-divider" />
-                <div class="receipt-section">
-                    <span class="section-label">To</span>
-                    <div class="section-value">
-                        <span id="previewRecipient">Nasima Mohammedsabir Mulla ❤️</span>
-                        <span class="bank-name" id="previewRecipientBank">Union Bank Of India - 8980</span>
-                    </div>
-                </div>
-                <div class="receipt-actions">
-                    <button class="btn-sm btn-sm-primary">Pay Again</button>
-                    <button class="btn-sm btn-sm-outline">View History</button>
-                </div>
-                <hr class="receipt-divider" />
-                <div class="receipt-section">
-                    <span class="section-label">From</span>
-                    <div class="section-value">
-                        <span id="previewSender">Habibul Islam</span>
-                    </div>
-                    <div class="section-value" style="font-weight:500; font-size:14px; color:#4b5563; gap:6px; flex-wrap:wrap;">
-                        <span class="upi-id" id="previewUpiId">7578067288@ptyes</span>
-                        <span class="bank-name" id="previewSenderBank">Canara Bank - 6161 🏦</span>
-                    </div>
-                </div>
-                <div class="receipt-footer">
-                    <span class="date-time" id="previewDateTime">09:12 AM, 23 Aug 2026</span>
-                    <div class="ref-row">
-                        <span class="ref-label">UPI Ref No:</span>
-                        <span class="ref-value" id="previewUpiRef">313049523266</span>
-                        <button class="copy-btn" id="copyRefBtn" title="Copy UPI reference">📋</button>
-                    </div>
-                </div>
-                <div class="receipt-share-help">
-                    <button class="link-btn" id="shareBtn">📤 Share</button>
-                    <button class="link-btn" id="helpBtn">❓ Help</button>
-                </div>
-            </div>
+        <button class="btn-edit" onclick="toggleEdit('to')">Edit Info</button>
+        <div class="edit-form" id="toEditForm">
+            <label>Photo URL</label> <input type="text" id="toImgInput" placeholder="Paste photo link">
+            <label>Naam</label> <input type="text" id="toNameInput">
+            <label>Bank Details</label> <input type="text" id="toBankInput">
+            <button class="btn-save" onclick="saveEdit('to')">Save</button>
         </div>
     </div>
-    <script>
-        const $ = id => document.getElementById(id);
-        const amount = $('amount'), amountWords = $('amountWords'), txCode = $('txCode');
-        const recipientName = $('recipientName'), recipientBank = $('recipientBank');
-        const senderName = $('senderName'), upiId = $('upiId'), senderBank = $('senderBank');
-        const time = $('time'), date = $('date'), upiRef = $('upiRef');
-        const showMoneyTransfer = $('showMoneyTransfer'), showEdit = $('showEdit');
-        const previewAmount = $('previewAmount'), previewAmountWords = $('previewAmountWords');
-        const previewTxCode = $('previewTxCode'), previewRecipient = $('previewRecipient');
-        const previewRecipientBank = $('previewRecipientBank'), previewSender = $('previewSender');
-        const previewUpiId = $('previewUpiId'), previewSenderBank = $('previewSenderBank');
-        const previewDateTime = $('previewDateTime'), previewUpiRef = $('previewUpiRef');
-        const tagMoneyTransfer = $('tagMoneyTransfer'), tagEdit = $('tagEdit'), previewTags = $('previewTags');
-        const toast = $('toast');
-        let toastTimer = null;
-        const DEFAULTS = { amount: '100', amountWords: 'Rupees One Hundred Only', txCode: 'C8QsR9', recipientName: 'Nasima Mohammedsabir Mulla ❤️', recipientBank: 'Union Bank Of India - 8980', senderName: 'Habibul Islam', upiId: '7578067288@ptyes', senderBank: 'Canara Bank - 6161 🏦', time: '09:12 AM', date: '23 Aug 2026', upiRef: '313049523266', showMoneyTransfer: true, showEdit: true };
-        function updatePreview() {
-            previewAmount.textContent = amount.value.trim() || '0';
-            previewAmountWords.textContent = amountWords.value.tr
+
+    <!-- From Section (Editable) -->
+    <div class="card">
+        <div class="label">From</div>
+        <div class="user-row">
+            <div class="avatar-frame"><img src="https://ui-avatars.com/api/?name=HI&background=e0f2f1&color=00695c" class="avatar" id="fromAvatar"></div>
+            <div>
+                <div class="name" id="fromName">Habibul Islam <i class="fa-solid fa-circle-check blue-check" id="fromTick" style="display:block;"></i></div>
+                <div class="bank-details" id="fromUpi">UPI ID: 7578067288@ptyes</div>
+                <div class="bank-details" id="fromBank">Canara Bank - 6161</div>
+            </div>
+        </div>
+        
+        <div style="display: flex; gap: 10px;">
+            <button class="btn-edit" onclick="toggleEdit('from')">Edit Info</button>
+            <button class="tick-toggle" onclick="toggleTick('from')">Blue Tick ON/OFF</button>
+        </div>
+
+        <div class="edit-form" id="fromEditForm">
+            <label>Photo URL (Frame ke liye)</label> <input type="text" id="fromImgInput" placeholder="Paste photo link">
+            <label>Naam</label> <input type="text" id="fromNameInput">
+            <label>UPI ID</label> <input type="text" id="fromUpiInput">
+            <label>Bank Details</label> <input type="text" id="fromBankInput">
+            <button class="btn-save" onclick="saveEdit('from')">Save</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="details-line" style="display:flex; justify-content:space-between; font-size:14px; color:#202124;">Paid at: 09:12 AM, 23 Aug 2026</div>
+        <div class="details-line" style="display:flex; justify-content:space-between; font-size:14px; color:#202124; margin-top:5px;">UPI Ref No: 313049523266 <a href="#" style="color:#1a73e8; text-decoration:none;">Copy</a></div>
+    </div>
+
+    <div class="footer">paytm | Powered by UPI | YES BANK</div>
+</div>
+
+<script>
+    function toggleEdit(section) {
+        var form = document.getElementById(section + 'EditForm');
+        form.style.display = (form.style.display === 'block') ? 'none' : 'block';
+        
+        // Fill inputs with current data
+        document.getElementById(section + 'NameInput').value = document.getElementById(section + 'Name').innerText.split(' ')[0];
+        document.getElementById(section + 'BankInput').value = document.getElementById(section + 'Bank').innerText;
+        if(section === 'from') {
+            document.getElementById(section + 'UpiInput').value = document.getElementById(section + 'Upi').innerText.replace('UPI ID: ', '');
+        }
+    }
+
+    function saveEdit(section) {
+        var newName = document.getElementById(section + 'NameInput').value;
+        var newBank = document.getElementById(section + 'BankInput').value;
+        var imgUrl = document.getElementById(section + 'ImgInput').value;
+
+        // For 'From' section, also update UPI
+        var nameHtml = newName + ' <i class="fa-solid fa-circle-check blue-check" id="' + section + 'Tick"></i>';
+        
+        if(section === 'to') {
+            document.getElementById('toName').innerHTML = nameHtml;
+            document.getElementById('toBank').innerText = newBank;
+        } else {
+            var newUpi = document.getElementById(section + 'UpiInput').value;
+            document.getElementById('fromName').innerHTML = nameHtml;
+            document.getElementById('fromUpi').innerText = 'UPI ID: ' + newUpi;
+            document.getElementById('fromBank').innerText = newBank;
+        }
+
+        // Update Image
+        if(imgUrl) {
+            document.getElementById(section + 'Avatar').src = imgUrl;
+        }
+
+        // Hide form
+        document.getElementById(section + 'EditForm').style.display = 'none';
+    }
+
+    function toggleTick(section) {
+        var tick = document.getElementById(section + 'Tick');
+        if(tick.style.display === 'none') {
+            tick.style.display = 'inline-block';
+        } else {
+            tick.style.display = 'none';
+        }
+    }
+</script>
+</body>
+</html>
