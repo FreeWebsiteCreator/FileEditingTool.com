@@ -8,7 +8,6 @@
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f1f3f4; margin: 0; padding: 0; display: flex; justify-content: center; }
         
-        /* Perfect Highlight and Frame */
         .app-container { background-color: #fff; width: 100%; max-width: 420px; margin: 10px; border-radius: 12px; border: 1px solid #ddd; box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding-bottom: 20px; overflow: hidden;}
         
         .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid #f1f3f4; }
@@ -61,7 +60,8 @@
         .btn-row { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
         .btn-green { background: #e6f4ea; color: #188038; border: none; padding: 12px 18px; border-radius: 25px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(24, 128, 56, 0.15); }
         
-        .edit-link { color: #357AE8; text-decoration: none; font-weight: 600; cursor: pointer; }
+        /* Highlighted Edit Button (Solid Blue) */
+        .btn-edit-highlight { background: #357AE8; color: #fff; border: none; padding: 10px 20px; border-radius: 25px; font-weight: 600; cursor: pointer; box-shadow: 0 3px 6px rgba(53, 122, 232, 0.3); }
 
         .card-row { display: flex; justify-content: space-between; align-items: flex-start; }
         .details-left { flex: 1; }
@@ -81,7 +81,7 @@
         .footer-logos { text-align: center; padding: 20px; font-size: 12px; color: #5f6368; display: flex; justify-content: center; align-items: center; gap: 10px; }
         .upi-bold { font-weight: bold; color: #202124; }
 
-        /* Edit Forms (To & From) */
+        /* To Section Edit Form */
         .edit-form { display: none; background: #f8f9fa; padding: 15px; margin-top: 15px; border-radius: 8px; border: 1px solid #e0e0e0; }
         .edit-form label { display: block; font-size: 13px; color: #5f6368; margin-bottom: 5px; }
         .edit-form input { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
@@ -109,10 +109,11 @@
         
         <div class="btn-row">
             <button class="btn-green"><i class="fa-solid fa-money-bill-wave"></i> Money Transfer</button>
-            <span class="edit-link" onclick="toggleEdit('to')">Edit</span>
+            <!-- Highlighted Edit Button -->
+            <button class="btn-edit-highlight" onclick="toggleEditTo()">Edit</button>
         </div>
         
-        <!-- To Section Edit Form -->
+        <!-- To Section Edit Form (Sirf Client ka) -->
         <div class="edit-form" id="editToForm">
             <label>Client Name (Alag lines ke liye comma lagayein)</label>
             <input type="text" id="inputToName" placeholder="Nasima, Mohammedsabir, Mulla">
@@ -120,7 +121,7 @@
             <input type="text" id="inputToBank" placeholder="Union Bank Of India - 8980">
             <label>Initials</label>
             <input type="text" id="inputToInitials" placeholder="NM">
-            <button onclick="saveEdit('to')">Save</button>
+            <button onclick="saveEditTo()">Save</button>
         </div>
     </div>
 
@@ -145,30 +146,17 @@
         </div>
     </div>
 
+    <!-- From Section (Bilkul Fixed - Koi edit nahi) -->
     <div class="section">
         <div class="label">From</div>
         <div class="card-row">
             <div class="details-left">
-                <div class="name-line" id="fromName">Habibul Islam</div>
-                <div class="bank-line" id="fromUpi">UPI ID: 7578067288@ptyes</div>
-                <div class="bank-line" id="fromBank">Canara Bank - 6161</div>
-                
-                <!-- Extra Edit for 'From' -->
-                <span class="edit-link" style="font-size: 14px;" onclick="toggleEdit('from')">Edit My Details</span>
-                
-                <!-- From Section Edit Form -->
-                <div class="edit-form" id="editFromForm">
-                    <label>Your Name</label>
-                    <input type="text" id="inputFromName" placeholder="Habibul Islam">
-                    <label>Your UPI ID</label>
-                    <input type="text" id="inputFromUpi" placeholder="7578067288@ptyes">
-                    <label>Your Bank Details</label>
-                    <input type="text" id="inputFromBank" placeholder="Canara Bank - 6161">
-                    <button onclick="saveEdit('from')">Save</button>
-                </div>
+                <div class="name-line">Habibul Islam</div>
+                <div class="bank-line">UPI ID: 7578067288@ptyes</div>
+                <div class="bank-line">Canara Bank - 6161</div>
             </div>
             <div class="details-right">
-                <img src="https://i.pravatar.cc/150?img=11" class="avatar-from" id="fromAvatar" alt="User">
+                <img src="https://i.pravatar.cc/150?img=11" class="avatar-from" alt="User">
             </div>
         </div>
     </div>
@@ -215,39 +203,27 @@
         document.getElementById('paidTime').innerText = updateTime();
     };
 
-    // Generic Edit function for both To and From
-    function toggleEdit(section) {
-        var form = document.getElementById('edit' + section.charAt(0).toUpperCase() + section.slice(1) + 'Form');
+    // Sirf "To" (Client) wale section ka Edit function
+    function toggleEditTo() {
+        var form = document.getElementById('editToForm');
         if (form.style.display === 'block') {
             form.style.display = 'none';
         } else {
-            if(section === 'to') {
-                document.getElementById('inputToName').value = document.getElementById('toName1').innerText + ',' + document.getElementById('toName2').innerText + ',' + document.getElementById('toName3').innerText;
-                document.getElementById('inputToBank').value = document.getElementById('toBank').innerText;
-                document.getElementById('inputToInitials').value = document.getElementById('toAvatar').innerText;
-            } else {
-                document.getElementById('inputFromName').value = document.getElementById('fromName').innerText;
-                document.getElementById('inputFromUpi').value = document.getElementById('fromUpi').innerText.replace('UPI ID: ', '');
-                document.getElementById('inputFromBank').value = document.getElementById('fromBank').innerText;
-            }
+            document.getElementById('inputToName').value = document.getElementById('toName1').innerText + ',' + document.getElementById('toName2').innerText + ',' + document.getElementById('toName3').innerText;
+            document.getElementById('inputToBank').value = document.getElementById('toBank').innerText;
+            document.getElementById('inputToInitials').value = document.getElementById('toAvatar').innerText;
             form.style.display = 'block';
         }
     }
 
-    function saveEdit(section) {
-        if(section === 'to') {
-            var names = document.getElementById('inputToName').value.split(',');
-            document.getElementById('toName1').innerText = names[0] || 'Nasima';
-            document.getElementById('toName2').innerText = names[1] || 'Mohammedsabir';
-            document.getElementById('toName3').innerHTML = (names[2] || 'Mulla') + ' <svg class="blue-tick" viewBox="0 0 24 24"><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.238 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-11 4.5l-3.5-3.5 1.41-1.41 2.09 2.08 4.59-4.59 1.41 1.41-6 6z"/></svg>';
-            document.getElementById('toBank').innerText = document.getElementById('inputToBank').value || 'Union Bank Of India - 8980';
-            document.getElementById('toAvatar').innerText = document.getElementById('inputToInitials').value || 'NM';
-        } else {
-            document.getElementById('fromName').innerText = document.getElementById('inputFromName').value || 'Habibul Islam';
-            document.getElementById('fromUpi').innerText = 'UPI ID: ' + (document.getElementById('inputFromUpi').value || '7578067288@ptyes');
-            document.getElementById('fromBank').innerText = document.getElementById('inputFromBank').value || 'Canara Bank - 6161';
-        }
-        toggleEdit(section);
+    function saveEditTo() {
+        var names = document.getElementById('inputToName').value.split(',');
+        document.getElementById('toName1').innerText = names[0] || 'Nasima';
+        document.getElementById('toName2').innerText = names[1] || 'Mohammedsabir';
+        document.getElementById('toName3').innerHTML = (names[2] || 'Mulla') + ' <svg class="blue-tick" viewBox="0 0 24 24"><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.238 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-11 4.5l-3.5-3.5 1.41-1.41 2.09 2.08 4.59-4.59 1.41 1.41-6 6z"/></svg>';
+        document.getElementById('toBank').innerText = document.getElementById('inputToBank').value || 'Union Bank Of India - 8980';
+        document.getElementById('toAvatar').innerText = document.getElementById('inputToInitials').value || 'NM';
+        toggleEditTo();
     }
 </script>
 </body>
