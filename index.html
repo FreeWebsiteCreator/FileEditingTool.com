@@ -19,7 +19,10 @@
 
         .amount-row { display: flex; align-items: flex-start; }
         .amount-val { font-size: 34px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
-        .green-tick { color: #34a853; font-size: 20px; }
+        
+        /* Exact Green Scalloped Tick */
+        .green-tick-svg { width: 20px; height: 20px; fill: #34a853; }
+        
         .amount-text { color: #202124; font-size: 15px; margin-top: 5px; }
         
         .chip { background: #f1f3f4; padding: 6px 12px; border-radius: 20px; font-size: 14px; border: 1px solid #ddd; display: inline-flex; align-items: center; margin-top: 10px; }
@@ -67,7 +70,10 @@
     <div class="section">
         <div class="label">Amount</div>
         <div class="amount-row">
-            <div class="amount-val" id="amountValue">₹100 <i class="fa-solid fa-circle-check green-tick"></i></div>
+            <div class="amount-val" id="amountValue">₹100 
+                <!-- Exact Green Scalloped Tick -->
+                <svg class="green-tick-svg" viewBox="0 0 24 24"><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.238 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-11 4.5l-3.5-3.5 1.41-1.41 2.09 2.08 4.59-4.59 1.41 1.41-6 6z"/></svg>
+            </div>
         </div>
         <div class="amount-text" id="amountWords">Rupees One Hundred Only</div>
         <div class="chip" id="txnCode">C8QsR9 <i class="fa-regular fa-copy"></i></div>
@@ -84,9 +90,7 @@
             <label>Transaction Code (C8QsR9)</label>
             <input type="text" id="codeInput" placeholder="C8QsR9">
             
-            <!-- Naya Time Edit Field -->
-            <label>Paid Time (Screenshot jaisa exact time)</label>
-            <input type="text" id="paidTimeInput" placeholder="09:12 AM, 23 Aug 2026">
+            <!-- Time box removed, Ab ye automatic rahega -->
             
             <label>To ka Naam (Alag lines ke liye comma use karein)</label>
             <input type="text" id="toNameInput" placeholder="Nasima, Mohammedsabir, Mulla">
@@ -109,7 +113,7 @@
                 <div class="name-line" id="toName1">Nasima</div>
                 <div class="name-line" id="toName2">Mohammedsabir</div>
                 <div class="name-line" id="toName3">Mulla 
-                    <!-- Exact Blue Tick SVG -->
+                    <!-- Exact Blue Tick -->
                     <svg class="blue-tick" viewBox="0 0 24 24"><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.238 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-11 4.5l-3.5-3.5 1.41-1.41 2.09 2.08 4.59-4.59 1.41 1.41-6 6z"/></svg>
                 </div>
                 <div class="bank-line" id="toBank">Union Bank Of India - 8980</div>
@@ -139,7 +143,7 @@
     </div>
 
     <div class="footer-details">
-        Paid at: <span id="paidTime">09:12 AM, 23 Aug 2026</span><br>
+        Paid at: <span id="paidTime">Loading...</span><br>
         UPI Ref No: <span id="utrNumber">313049523266</span> <a href="#">Copy</a>
     </div>
 
@@ -149,7 +153,7 @@
 </div>
 
 <script>
-    // Automation: Random 12 digit UTR generate karne ka function
+    // Automation: Random 12 digit UTR aur Exact current time generate karne ka function
     function generateRandomDigits(length) {
         let result = '';
         for(let i = 0; i < length; i++) {
@@ -158,9 +162,22 @@
         return result;
     }
 
-    // Page load hote hi UTR auto-update ho jayega (Time screenshot jaisa exact static rahega)
+    function updateTime() {
+        const now = new Date();
+        let hours = now.getHours();
+        let minutes = now.getMinutes();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; 
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        const strTime = hours + ':' + minutes + ' ' + ampm + ', ' + now.getDate() + ' ' + now.toLocaleString('en-us', { month: 'short' }) + ' ' + now.getFullYear();
+        return strTime;
+    }
+
+    // Page load hote hi UTR aur Time dono automatic update ho jayenge
     window.onload = function() {
         document.getElementById('utrNumber').innerText = generateRandomDigits(12);
+        document.getElementById('paidTime').innerText = updateTime();
     };
 
     function toggleEdit() {
@@ -172,9 +189,6 @@
             document.getElementById('amountInput').value = document.getElementById('amountValue').innerText.replace('₹', '').trim();
             document.getElementById('amountWordsInput').value = document.getElementById('amountWords').innerText;
             document.getElementById('codeInput').value = document.getElementById('txnCode').innerText.trim();
-            
-            // Pre-fill exact time
-            document.getElementById('paidTimeInput').value = document.getElementById('paidTime').innerText;
             
             var names = document.getElementById('toName1').innerText + ',' + document.getElementById('toName2').innerText + ',' + document.getElementById('toName3').innerText;
             document.getElementById('toNameInput').value = names;
@@ -188,12 +202,9 @@
     }
 
     function saveEdit() {
-        document.getElementById('amountValue').innerHTML = '₹' + (document.getElementById('amountInput').value || '100') + ' <i class="fa-solid fa-circle-check green-tick"></i>';
+        document.getElementById('amountValue').innerHTML = '₹' + (document.getElementById('amountInput').value || '100') + ' <svg class="green-tick-svg" viewBox="0 0 24 24"><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.238 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-11 4.5l-3.5-3.5 1.41-1.41 2.09 2.08 4.59-4.59 1.41 1.41-6 6z"/></svg>';
         document.getElementById('amountWords').innerText = document.getElementById('amountWordsInput').value || 'Rupees One Hundred Only';
         document.getElementById('txnCode').innerHTML = (document.getElementById('codeInput').value || 'C8QsR9') + ' <i class="fa-regular fa-copy"></i>';
-        
-        // Time Update (Exact screenshot jaisa)
-        document.getElementById('paidTime').innerText = document.getElementById('paidTimeInput').value || '09:12 AM, 23 Aug 2026';
 
         var names = document.getElementById('toNameInput').value.split(',');
         document.getElementById('toName1').innerText = names[0] || 'Nasima';
