@@ -21,7 +21,7 @@
         .amount-row { display: flex; align-items: flex-start; }
         .amount-val { font-size: 34px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
         
-        /* Clean Circle Ticks */
+        /* Clean Circle Ticks (Soft Blue) */
         .green-tick-svg { width: 24px; height: 24px; }
         .blue-tick { width: 20px; height: 20px; margin-left: 5px; }
 
@@ -59,7 +59,6 @@
         .btn-row { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
         .btn-green { background: #e6f4ea; color: #188038; border: none; padding: 10px 15px; border-radius: 20px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; }
         
-        /* Blue thoda soft kiya (border 1px) */
         .edit-link { color: #357AE8; text-decoration: none; font-weight: 500; cursor: pointer; }
 
         .card-row { display: flex; justify-content: space-between; align-items: flex-start; }
@@ -80,10 +79,11 @@
         .footer-logos { text-align: center; padding: 20px; font-size: 12px; color: #5f6368; display: flex; justify-content: center; align-items: center; gap: 10px; }
         .upi-bold { font-weight: bold; color: #202124; }
 
-        #editFromForm { display: none; background: #f8f9fa; padding: 15px; margin-top: 15px; border-radius: 8px; }
-        #editFromForm label { display: block; font-size: 13px; color: #5f6368; margin-bottom: 5px; }
-        #editFromForm input { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        #editFromForm button { background: #357AE8; color: #fff; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
+        /* Edit Form for 'To' section */
+        #editToForm { display: none; background: #f8f9fa; padding: 15px; margin-top: 15px; border-radius: 8px; }
+        #editToForm label { display: block; font-size: 13px; color: #5f6368; margin-bottom: 5px; }
+        #editToForm input { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        #editToForm button { background: #357AE8; color: #fff; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -107,10 +107,22 @@
         
         <div class="btn-row">
             <button class="btn-green"><i class="fa-solid fa-money-bill-wave"></i> Money Transfer</button>
-            <span class="edit-link" onclick="toggleEditFrom()">Edit</span>
+            <span class="edit-link" onclick="toggleEditTo()">Edit</span>
+        </div>
+        
+        <!-- Hidden Edit Form for 'To' Client -->
+        <div id="editToForm">
+            <label>Client ka Naam (Alag lines ke liye comma use karein)</label>
+            <input type="text" id="inputToName" placeholder="Nasima, Mohammedsabir, Mulla">
+            <label>Client Bank Details</label>
+            <input type="text" id="inputToBank" placeholder="Union Bank Of India - 8980">
+            <label>Client Initials (Circle mein dikhne ke liye)</label>
+            <input type="text" id="inputToInitials" placeholder="NM">
+            <button onclick="saveEditTo()">Save Changes</button>
         </div>
     </div>
 
+    <!-- To Section (Editable) -->
     <div class="section">
         <div class="label">To</div>
         <div class="card-row">
@@ -132,26 +144,17 @@
         </div>
     </div>
 
+    <!-- From Section (Fixed - Apni details) -->
     <div class="section">
         <div class="label">From</div>
         <div class="card-row">
             <div class="details-left">
-                <div class="name-line" id="fromName">Habibul Islam</div>
-                <div class="bank-line" id="fromUpi">UPI ID: 7578067288@ptyes</div>
-                <div class="bank-line" id="fromBank">Canara Bank - 6161</div>
-                
-                <div id="editFromForm">
-                    <label>From Naam</label>
-                    <input type="text" id="inputFromName" placeholder="Habibul Islam">
-                    <label>From UPI ID</label>
-                    <input type="text" id="inputFromUpi" placeholder="7578067288@ptyes">
-                    <label>From Bank Details</label>
-                    <input type="text" id="inputFromBank" placeholder="Canara Bank - 6161">
-                    <button onclick="saveEditFrom()">Save</button>
-                </div>
+                <div class="name-line">Habibul Islam</div>
+                <div class="bank-line">UPI ID: 7578067288@ptyes</div>
+                <div class="bank-line">Canara Bank - 6161</div>
             </div>
             <div class="details-right">
-                <img src="https://i.pravatar.cc/150?img=11" class="avatar-from" id="fromAvatar" alt="User">
+                <img src="https://i.pravatar.cc/150?img=11" class="avatar-from" alt="User">
             </div>
         </div>
     </div>
@@ -168,20 +171,6 @@
 </div>
 
 <script>
-    // Random Names Data
-    const toUsers = [
-        { name1: "Nasima", name2: "Mohammedsabir", name3: "Mulla", bank: "Union Bank Of India - 8980", initials: "NM" },
-        { name1: "Rabijul", name2: "Hussain", name3: "Laskar", bank: "Union Bank Of India - 1667", initials: "RL" },
-        { name1: "Amit", name2: "Kumar", name3: "Sharma", bank: "State Bank Of India - 1234", initials: "AK" },
-        { name1: "Priya", name2: "Singh", name3: "", bank: "HDFC Bank - 5678", initials: "PS" }
-    ];
-
-    const fromUsers = [
-        { name: "Habibul Islam", upi: "7578067288@ptyes", bank: "Canara Bank - 6161", img: "https://i.pravatar.cc/150?img=11" },
-        { name: "Rahul Verma", upi: "rahul@oksbi", bank: "SBI - 1234", img: "https://i.pravatar.cc/150?img=12" },
-        { name: "Ayesha Khan", upi: "ayesha@ybl", bank: "ICICI - 5678", img: "https://i.pravatar.cc/150?img=13" }
-    ];
-
     function numberToWords(num) {
         if (num === 0) return 'Zero';
         const a = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
@@ -207,45 +196,34 @@
         return hours + ':' + minutes + ' ' + ampm + ', ' + now.getDate() + ' ' + now.toLocaleString('en-us', { month: 'short' }) + ' ' + now.getFullYear();
     }
 
-    // Refresh hone par Sab Kuch Update
+    // UTR aur Time automation (From fixed hai, isliye koi random name function nahi)
     window.onload = function() {
-        // Pick Random To User
-        const toUser = toUsers[Math.floor(Math.random() * toUsers.length)];
-        document.getElementById('toName1').innerText = toUser.name1;
-        document.getElementById('toName2').innerText = toUser.name2;
-        document.getElementById('toName3').innerHTML = toUser.name3 + ' <svg class="blue-tick" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#1d9bf0"/><path d="M8 12.5l2.5 2.5L16 9.5" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-        document.getElementById('toBank').innerText = toUser.bank;
-        document.getElementById('toAvatar').innerText = toUser.initials;
-
-        // Pick Random From User
-        const fromUser = fromUsers[Math.floor(Math.random() * fromUsers.length)];
-        document.getElementById('fromName').innerText = fromUser.name;
-        document.getElementById('fromUpi').innerText = 'UPI ID: ' + fromUser.upi;
-        document.getElementById('fromBank').innerText = fromUser.bank;
-        document.getElementById('fromAvatar').src = fromUser.img;
-
-        // UTR aur Time Update
         document.getElementById('utrNumber').innerText = generateUtr();
         document.getElementById('paidTime').innerText = updateTime();
     };
 
-    function toggleEditFrom() {
-        var form = document.getElementById('editFromForm');
+    // Function to Edit 'To' Client
+    function toggleEditTo() {
+        var form = document.getElementById('editToForm');
         if (form.style.display === 'block') {
             form.style.display = 'none';
         } else {
-            document.getElementById('inputFromName').value = document.getElementById('fromName').innerText;
-            document.getElementById('inputFromUpi').value = document.getElementById('fromUpi').innerText.replace('UPI ID: ', '');
-            document.getElementById('inputFromBank').value = document.getElementById('fromBank').innerText;
+            document.getElementById('inputToName').value = document.getElementById('toName1').innerText + ',' + document.getElementById('toName2').innerText + ',' + document.getElementById('toName3').innerText;
+            document.getElementById('inputToBank').value = document.getElementById('toBank').innerText;
+            document.getElementById('inputToInitials').value = document.getElementById('toAvatar').innerText;
             form.style.display = 'block';
         }
     }
 
-    function saveEditFrom() {
-        document.getElementById('fromName').innerText = document.getElementById('inputFromName').value || 'Habibul Islam';
-        document.getElementById('fromUpi').innerText = 'UPI ID: ' + (document.getElementById('inputFromUpi').value || '7578067288@ptyes');
-        document.getElementById('fromBank').innerText = document.getElementById('inputFromBank').value || 'Canara Bank - 6161';
-        toggleEditFrom();
+    function saveEditTo() {
+        var names = document.getElementById('inputToName').value.split(',');
+        document.getElementById('toName1').innerText = names[0] || 'Nasima';
+        document.getElementById('toName2').innerText = names[1] || 'Mohammedsabir';
+        document.getElementById('toName3').innerHTML = (names[2] || 'Mulla') + ' <svg class="blue-tick" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#1d9bf0"/><path d="M8 12.5l2.5 2.5L16 9.5" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        
+        document.getElementById('toBank').innerText = document.getElementById('inputToBank').value || 'Union Bank Of India - 8980';
+        document.getElementById('toAvatar').innerText = document.getElementById('inputToInitials').value || 'NM';
+        toggleEditTo();
     }
 </script>
 </body>
