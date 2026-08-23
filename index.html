@@ -65,16 +65,25 @@
     <div class="section">
         <div class="label">Amount</div>
         <div class="amount-row">
-            <div class="amount-val">₹100 <i class="fa-solid fa-circle-check green-tick"></i></div>
+            <div class="amount-val" id="amountValue">₹100 <i class="fa-solid fa-circle-check green-tick"></i></div>
         </div>
-        <div class="amount-text">Rupees One Hundred Only</div>
-        <div class="chip">C8QsR9 <i class="fa-regular fa-copy"></i></div>
+        <div class="amount-text" id="amountWords">Rupees One Hundred Only</div>
+        <div class="chip" id="txnCode">C8QsR9 <i class="fa-regular fa-copy"></i></div>
         <div class="btn-row">
             <button class="btn-green"><i class="fa-solid fa-money-bill-wave"></i> Money Transfer</button>
             <span class="edit-link" onclick="toggleEdit()">Edit</span>
         </div>
 
         <div id="editForm">
+            <label>Amount (₹)</label>
+            <input type="text" id="amountInput" placeholder="100">
+            
+            <label>Amount in Words</label>
+            <input type="text" id="amountWordsInput" placeholder="Rupees One Hundred Only">
+            
+            <label>Transaction Code (C8QsR9)</label>
+            <input type="text" id="codeInput" placeholder="C8QsR9">
+            
             <label>To ka Naam (Alag lines ke liye comma use karein)</label>
             <input type="text" id="toNameInput" placeholder="Nasima, Mohammedsabir, Mulla">
             <label>To Bank Details</label>
@@ -85,6 +94,7 @@
             <input type="text" id="fromUpiInput" placeholder="7578067288@ptyes">
             <label>From Bank Details</label>
             <input type="text" id="fromBankInput" placeholder="Canara Bank - 6161">
+            
             <button onclick="saveEdit()">Save Changes</button>
         </div>
     </div>
@@ -114,7 +124,7 @@
             <div class="details-left">
                 <div class="name-line" id="fromName">Habibul Islam</div>
                 <div class="bank-line" id="fromUpi">UPI ID: 7578067288@ptyes</div>
-                <div class="bank-line" id="fromBank">Canara Bank - 6161</div> <!-- Yahan se emoji hata diya -->
+                <div class="bank-line" id="fromBank">Canara Bank - 6161</div>
             </div>
             <div class="details-right">
                 <img src="https://ui-avatars.com/api/?name=HI&background=e0f2f1&color=00695c" class="avatar-from" id="fromAvatar">
@@ -135,23 +145,46 @@
 <script>
     function toggleEdit() {
         var form = document.getElementById('editForm');
-        form.style.display = (form.style.display === 'block') ? 'none' : 'block';
+        if (form.style.display === 'block') {
+            form.style.display = 'none';
+        } else {
+            // Fill inputs with current data before showing
+            document.getElementById('amountInput').value = document.getElementById('amountValue').innerText.replace('₹', '').trim();
+            document.getElementById('amountWordsInput').value = document.getElementById('amountWords').innerText;
+            document.getElementById('codeInput').value = document.getElementById('txnCode').innerText.replace('C8QsR9', '').trim() || 'C8QsR9'; // Just getting the text
+            
+            var names = document.getElementById('toName1').innerText + ',' + document.getElementById('toName2').innerText + ',' + document.getElementById('toName3').innerText.replace(' Mulla', '');
+            document.getElementById('toNameInput').value = names;
+            document.getElementById('toBankInput').value = document.getElementById('toBank').innerText;
+            document.getElementById('fromNameInput').value = document.getElementById('fromName').innerText;
+            document.getElementById('fromUpiInput').value = document.getElementById('fromUpi').innerText.replace('UPI ID: ', '');
+            document.getElementById('fromBankInput').value = document.getElementById('fromBank').innerText;
+            
+            form.style.display = 'block';
+        }
     }
 
     function saveEdit() {
+        // Save Amount
+        document.getElementById('amountValue').innerHTML = '₹' + (document.getElementById('amountInput').value || '100') + ' <i class="fa-solid fa-circle-check green-tick"></i>';
+        document.getElementById('amountWords').innerText = document.getElementById('amountWordsInput').value || 'Rupees One Hundred Only';
+        
+        // Save Code
+        document.getElementById('txnCode').innerHTML = (document.getElementById('codeInput').value || 'C8QsR9') + ' <i class="fa-regular fa-copy"></i>';
+
+        // Save Names
         var names = document.getElementById('toNameInput').value.split(',');
         document.getElementById('toName1').innerText = names[0] || 'Nasima';
         document.getElementById('toName2').innerText = names[1] || 'Mohammedsabir';
         document.getElementById('toName3').innerHTML = (names[2] || 'Mulla') + ' <i class="fa-solid fa-circle-check blue-tick"></i>';
         
+        // Save Bank/Other
         document.getElementById('toBank').innerText = document.getElementById('toBankInput').value || 'Union Bank Of India - 8980';
         document.getElementById('fromName').innerText = document.getElementById('fromNameInput').value || 'Habibul Islam';
         document.getElementById('fromUpi').innerText = 'UPI ID: ' + (document.getElementById('fromUpiInput').value || '7578067288@ptyes');
-        
-        // Yahan se emoji hataya aur logic sahi kiya
         document.getElementById('fromBank').innerText = document.getElementById('fromBankInput').value || 'Canara Bank - 6161';
 
-        toggleEdit();
+        toggleEdit(); // Hide form
     }
 </script>
 </body>
