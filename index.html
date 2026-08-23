@@ -4,166 +4,167 @@ index.html
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Receipt Editor</title>
+    <title>Payment Receipt</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f1f3f4; margin: 0; padding: 0; display: flex; justify-content: center; }
-        .app-container { background-color: #fff; width: 100%; max-width: 450px; min-height: 100vh; box-shadow: 0 0 10px rgba(0,0,0,0.1); padding-bottom: 20px;}
+        .app-container { background-color: #fff; width: 100%; max-width: 420px; margin: 10px; border-radius: 12px; border: 1px solid #ddd; box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding-bottom: 20px; overflow: hidden;}
         
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #eee; }
-        .header-title { font-size: 18px; font-weight: 500; color: #202124; }
-        .header-actions { display: flex; gap: 15px; color: #1a73e8; font-weight: 500; font-size: 14px; }
+        /* Header */
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid #f1f3f4; }
+        .header-title { font-size: 18px; font-weight: 500; color: #202124; display: flex; align-items: center; gap: 10px; }
+        .header-title i { font-size: 18px; cursor: pointer; }
+        .header-actions { color: #1a73e8; font-weight: 500; font-size: 15px; display: flex; gap: 15px; }
 
-        .card { padding: 20px; border-bottom: 8px solid #f1f3f4; }
+        /* Sections */
+        .section { padding: 20px; border-bottom: 1px solid #f1f3f4; }
         .label { color: #5f6368; font-size: 14px; margin-bottom: 10px; }
 
-        /* Payment Section */
-        .amount-row { display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
-        .amount-row h1 { font-size: 36px; margin: 0; font-weight: 500; }
-        .green-check { color: #34a853; font-size: 20px; }
-        .chip { display: inline-flex; align-items: center; background: #f1f3f4; padding: 8px 12px; border-radius: 20px; font-size: 14px; border: 1px solid #dadce0; margin-bottom: 15px; }
-        .button-row { display: flex; align-items: center; gap: 15px; }
-        .btn-green { background: #e6f4ea; color: #188038; border: none; padding: 10px 15px; border-radius: 20px; font-weight: 500; cursor: pointer; }
+        /* Amount & Buttons */
+        .amount-row { display: flex; align-items: flex-start; }
+        .amount-val { font-size: 34px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+        .green-tick { color: #34a853; font-size: 20px; }
+        .amount-text { color: #202124; font-size: 15px; margin-top: 5px; }
         
-        /* User Card */
-        .user-row { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
-        .avatar-frame { width: 55px; height: 55px; border-radius: 50%; overflow: hidden; border: 2px solid #1a73e8; padding: 2px; background: #fff; }
-        .avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: #e0f2f1; }
-        .name { font-size: 18px; font-weight: 600; color: #202124; display: flex; align-items: center; gap: 5px; margin-bottom: 3px; }
-        .blue-check { color: #1a73e8; font-size: 16px; display: inline-block; }
-        .bank-details { color: #5f6368; font-size: 14px; margin-bottom: 3px; }
-        
-        /* Edit Feature Styles */
-        .edit-controls { margin-top: 10px; }
-        .btn-edit { border: 1px solid #dadce0; background: #fff; color: #202124; padding: 6px 15px; border-radius: 20px; cursor: pointer; font-size: 14px; margin-right: 8px; }
-        .btn-save { background: #1a73e8; border: none; color: #fff; padding: 6px 15px; border-radius: 20px; cursor: pointer; font-size: 14px; }
-        .edit-form { margin-top: 15px; background: #f8f9fa; padding: 15px; border-radius: 10px; display: none; }
-        .edit-form label { display: block; margin-bottom: 5px; font-size: 13px; color: #5f6368; }
-        .edit-form input { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #dadce0; border-radius: 5px; box-sizing: border-box; }
-        
-        /* Toggle Blue Tick Button */
-        .tick-toggle { background: #e8f0fe; border: none; color: #1a73e8; padding: 5px 10px; border-radius: 15px; font-size: 12px; cursor: pointer; margin-left: 10px; }
+        .chip { background: #f1f3f4; padding: 6px 12px; border-radius: 20px; font-size: 14px; border: 1px solid #ddd; display: inline-flex; align-items: center; margin-top: 10px; }
+        .chip i { margin-left: 8px; color: #5f6368; cursor: pointer; }
 
-        .footer { text-align: center; padding: 20px; font-size: 12px; color: #5f6368; }
+        .btn-row { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
+        .btn-green { background: #e6f4ea; color: #188038; border: none; padding: 10px 15px; border-radius: 20px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        .edit-link { color: #1a73e8; text-decoration: none; font-weight: 500; cursor: pointer; }
+
+        /* To & From Section */
+        .card-row { display: flex; justify-content: space-between; align-items: flex-start; }
+        .details-left { flex: 1; }
+        
+        .name-line { font-size: 18px; font-weight: 600; line-height: 1.4; color: #202124; display: flex; align-items: center; }
+        .blue-tick { color: #1a73e8; font-size: 16px; margin-left: 5px; }
+        
+        .bank-line { color: #5f6368; font-size: 14px; margin-top: 5px; }
+        .party-icon { font-size: 12px; }
+
+        .outline-btn { border: 1px solid #1a73e8; color: #1a73e8; background: transparent; padding: 10px 15px; border-radius: 20px; font-weight: 500; cursor: pointer; font-size: 14px; margin-top: 15px; margin-right: 10px; }
+
+        /* Avatars */
+        .avatar-to { width: 50px; height: 50px; border-radius: 50%; background: #e0f2f1; color: #000; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+        .avatar-from { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+
+        /* Footer */
+        .footer-details { padding: 20px; border-bottom: 1px solid #f1f3f4; font-size: 14px; color: #202124; line-height: 2; }
+        .footer-details a { color: #1a73e8; text-decoration: none; font-weight: 500; margin-left: 5px; cursor: pointer; }
+        
+        .footer-logos { text-align: center; padding: 20px; font-size: 12px; color: #5f6368; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        .upi-bold { font-weight: bold; color: #202124; }
+
+        /* Hidden Edit Form */
+        #editForm { display: none; background: #f8f9fa; padding: 15px; margin-top: 15px; border-radius: 8px; }
+        #editForm label { display: block; font-size: 13px; color: #5f6368; margin-bottom: 5px; }
+        #editForm input { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        #editForm button { background: #1a73e8; color: #fff; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
     <div class="header">
-        <i class="fa-solid fa-arrow-left" style="color: #202124;"></i>
-        <div class="header-title">Sent Successfully</div>
+        <div class="header-title"><i class="fa-solid fa-arrow-left"></i> Sent Successfully</div>
         <div class="header-actions">Share Help</div>
     </div>
 
-    <div class="card">
+    <!-- Amount Section -->
+    <div class="section">
         <div class="label">Amount</div>
-        <div class="amount-row"><h1>₹100</h1> <i class="fa-solid fa-circle-check green-check"></i></div>
-        <div class="amount-words">Rupees One Hundred Only</div>
+        <div class="amount-row">
+            <div class="amount-val">₹100 <i class="fa-solid fa-circle-check green-tick"></i></div>
+        </div>
+        <div class="amount-text">Rupees One Hundred Only</div>
         <div class="chip">C8QsR9 <i class="fa-regular fa-copy"></i></div>
-        <div class="button-row"><button class="btn-green">Money Transfer</button> <a href="#" style="color:#1a73e8; text-decoration:none; font-weight:500;">Edit</a></div>
+        <div class="btn-row">
+            <button class="btn-green"><i class="fa-solid fa-money-bill-wave"></i> Money Transfer</button>
+            <span class="edit-link" onclick="toggleEdit()">Edit</span>
+        </div>
+
+        <!-- Hidden edit form -->
+        <div id="editForm">
+            <label>To ka Naam (Alag lines ke liye comma use karein)</label>
+            <input type="text" id="toNameInput" placeholder="Nasima, Mohammedsabir, Mulla">
+            <label>To Bank Details</label>
+            <input type="text" id="toBankInput" placeholder="Union Bank Of India - 8980">
+            <label>From Naam</label>
+            <input type="text" id="fromNameInput" placeholder="Habibul Islam">
+            <label>From UPI ID</label>
+            <input type="text" id="fromUpiInput" placeholder="7578067288@ptyes">
+            <label>From Bank Details</label>
+            <input type="text" id="fromBankInput" placeholder="Canara Bank - 6161">
+            <button onclick="saveEdit()">Save Changes</button>
+        </div>
     </div>
 
-    <!-- To Section (Editable) -->
-    <div class="card">
+    <!-- To Section -->
+    <div class="section">
         <div class="label">To</div>
-        <div class="user-row">
-            <div class="avatar-frame"><img src="https://ui-avatars.com/api/?name=NM&background=e0f2f1&color=00695c" class="avatar" id="toAvatar"></div>
-            <div>
-                <div class="name" id="toName">Nasima Mohammedsabir Mulla <i class="fa-solid fa-circle-check blue-check" id="toTick"></i></div>
-                <div class="bank-details" id="toBank">Union Bank Of India - 8980</div>
+        <div class="card-row">
+            <div class="details-left">
+                <div class="name-line" id="toName1">Nasima</div>
+                <div class="name-line" id="toName2">Mohammedsabir</div>
+                <div class="name-line" id="toName3">Mulla <i class="fa-solid fa-circle-check blue-tick"></i></div>
+                <div class="bank-line" id="toBank">Union Bank Of India - 8980</div>
+                <div class="button-row" style="display:flex;">
+                    <button class="outline-btn">Pay Again</button>
+                    <button class="outline-btn">View History</button>
+                </div>
             </div>
-        </div>
-        <button class="btn-edit" onclick="toggleEdit('to')">Edit Info</button>
-        <div class="edit-form" id="toEditForm">
-            <label>Photo URL</label> <input type="text" id="toImgInput" placeholder="Paste photo link">
-            <label>Naam</label> <input type="text" id="toNameInput">
-            <label>Bank Details</label> <input type="text" id="toBankInput">
-            <button class="btn-save" onclick="saveEdit('to')">Save</button>
+            <div class="details-right">
+                <div class="avatar-to">NM</div>
+            </div>
         </div>
     </div>
 
-    <!-- From Section (Editable) -->
-    <div class="card">
+    <!-- From Section -->
+    <div class="section">
         <div class="label">From</div>
-        <div class="user-row">
-            <div class="avatar-frame"><img src="https://ui-avatars.com/api/?name=HI&background=e0f2f1&color=00695c" class="avatar" id="fromAvatar"></div>
-            <div>
-                <div class="name" id="fromName">Habibul Islam <i class="fa-solid fa-circle-check blue-check" id="fromTick" style="display:block;"></i></div>
-                <div class="bank-details" id="fromUpi">UPI ID: 7578067288@ptyes</div>
-                <div class="bank-details" id="fromBank">Canara Bank - 6161</div>
+        <div class="card-row">
+            <div class="details-left">
+                <div class="name-line" id="fromName">Habibul Islam</div>
+                <div class="bank-line" id="fromUpi">UPI ID: 7578067288@ptyes</div>
+                <div class="bank-line" id="fromBank">Canara Bank - 6161 <span class="party-icon">🎉</span></div>
+            </div>
+            <div class="details-right">
+                <img src="https://ui-avatars.com/api/?name=HI&background=e0f2f1&color=00695c" class="avatar-from" id="fromAvatar">
             </div>
         </div>
-        
-        <div style="display: flex; gap: 10px;">
-            <button class="btn-edit" onclick="toggleEdit('from')">Edit Info</button>
-            <button class="tick-toggle" onclick="toggleTick('from')">Blue Tick ON/OFF</button>
-        </div>
-
-        <div class="edit-form" id="fromEditForm">
-            <label>Photo URL (Frame ke liye)</label> <input type="text" id="fromImgInput" placeholder="Paste photo link">
-            <label>Naam</label> <input type="text" id="fromNameInput">
-            <label>UPI ID</label> <input type="text" id="fromUpiInput">
-            <label>Bank Details</label> <input type="text" id="fromBankInput">
-            <button class="btn-save" onclick="saveEdit('from')">Save</button>
-        </div>
     </div>
 
-    <div class="card">
-        <div class="details-line" style="display:flex; justify-content:space-between; font-size:14px; color:#202124;">Paid at: 09:12 AM, 23 Aug 2026</div>
-        <div class="details-line" style="display:flex; justify-content:space-between; font-size:14px; color:#202124; margin-top:5px;">UPI Ref No: 313049523266 <a href="#" style="color:#1a73e8; text-decoration:none;">Copy</a></div>
+    <!-- Footer Details -->
+    <div class="footer-details">
+        Paid at: 09:12 AM, 23 Aug 2026<br>
+        UPI Ref No: 313049523266 <a href="#">Copy</a>
     </div>
 
-    <div class="footer">paytm | Powered by UPI | YES BANK</div>
+    <!-- Footer Logos -->
+    <div class="footer-logos">
+        <span>paytm</span> | <span>Powered by <span class="upi-bold">UPI</span></span> | <span>YES BANK</span>
+    </div>
 </div>
 
 <script>
-    function toggleEdit(section) {
-        var form = document.getElementById(section + 'EditForm');
+    function toggleEdit() {
+        var form = document.getElementById('editForm');
         form.style.display = (form.style.display === 'block') ? 'none' : 'block';
-        
-        // Fill inputs with current data
-        document.getElementById(section + 'NameInput').value = document.getElementById(section + 'Name').innerText.split(' ')[0];
-        document.getElementById(section + 'BankInput').value = document.getElementById(section + 'Bank').innerText;
-        if(section === 'from') {
-            document.getElementById(section + 'UpiInput').value = document.getElementById(section + 'Upi').innerText.replace('UPI ID: ', '');
-        }
     }
 
-    function saveEdit(section) {
-        var newName = document.getElementById(section + 'NameInput').value;
-        var newBank = document.getElementById(section + 'BankInput').value;
-        var imgUrl = document.getElementById(section + 'ImgInput').value;
-
-        // For 'From' section, also update UPI
-        var nameHtml = newName + ' <i class="fa-solid fa-circle-check blue-check" id="' + section + 'Tick"></i>';
+    function saveEdit() {
+        var names = document.getElementById('toNameInput').value.split(',');
+        document.getElementById('toName1').innerText = names[0] || 'Nasima';
+        document.getElementById('toName2').innerText = names[1] || 'Mohammedsabir';
+        document.getElementById('toName3').innerHTML = (names[2] || 'Mulla') + ' <i class="fa-solid fa-circle-check blue-tick"></i>';
         
-        if(section === 'to') {
-            document.getElementById('toName').innerHTML = nameHtml;
-            document.getElementById('toBank').innerText = newBank;
-        } else {
-            var newUpi = document.getElementById(section + 'UpiInput').value;
-            document.getElementById('fromName').innerHTML = nameHtml;
-            document.getElementById('fromUpi').innerText = 'UPI ID: ' + newUpi;
-            document.getElementById('fromBank').innerText = newBank;
-        }
+        document.getElementById('toBank').innerText = document.getElementById('toBankInput').value || 'Union Bank Of India - 8980';
+        document.getElementById('fromName').innerText = document.getElementById('fromNameInput').value || 'Habibul Islam';
+        document.getElementById('fromUpi').innerText = 'UPI ID: ' + (document.getElementById('fromUpiInput').value || '7578067288@ptyes');
+        document.getElementById('fromBank').innerText = document.getElementById('fromBankInput').value + ' 🎉' || 'Canara Bank - 6161 🎉';
 
-        // Update Image
-        if(imgUrl) {
-            document.getElementById(section + 'Avatar').src = imgUrl;
-        }
-
-        // Hide form
-        document.getElementById(section + 'EditForm').style.display = 'none';
-    }
-
-    function toggleTick(section) {
-        var tick = document.getElementById(section + 'Tick');
-        if(tick.style.display === 'none') {
-            tick.style.display = 'inline-block';
-        } else {
-            tick.style.display = 'none';
-        }
+        toggleEdit();
     }
 </script>
 </body>
