@@ -7,78 +7,83 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f1f3f4; margin: 0; padding: 0; display: flex; justify-content: center; }
-        .app-container { background-color: #fff; width: 100%; max-width: 420px; margin: 10px; border-radius: 12px; border: 1px solid #ddd; box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding-bottom: 20px; overflow: hidden;}
         
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid #f1f3f4; }
-        .header-title { font-size: 18px; font-weight: 500; color: #202124; display: flex; align-items: center; gap: 10px; }
-        .header-title i { font-size: 18px; cursor: pointer; }
-        .header-actions { color: #1a73e8; font-weight: 500; font-size: 15px; display: flex; gap: 15px; }
+        /* Main Card - Bada aur Deep Highlight */
+        .app-container { background-color: #fff; width: 100%; max-width: 420px; margin: 10px; border-radius: 16px; border: 2px solid #e0e0e0; box-shadow: 0 5px 15px rgba(0,0,0,0.12); padding-bottom: 20px; overflow: hidden;}
+        
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 2px solid #f1f3f4; }
+        .header-title { font-size: 19px; font-weight: 700; color: #202124; display: flex; align-items: center; gap: 10px; }
+        .header-title i { font-size: 19px; cursor: pointer; }
+        .header-actions { color: #1a73e8; font-weight: 600; font-size: 15px; display: flex; gap: 15px; }
 
-        .section { padding: 20px; border-bottom: 1px solid #f1f3f4; }
+        .section { padding: 20px; border-bottom: 1px solid #e8e8e8; }
         .label { color: #5f6368; font-size: 14px; margin-bottom: 10px; }
 
         .amount-row { display: flex; align-items: flex-start; }
-        .amount-val { font-size: 34px; font-weight: 500; display: flex; align-items: center; gap: 10px; }
-        .green-tick-svg { width: 28px; height: 28px; fill: #34a853; }
-        .blue-tick { width: 24px; height: 24px; margin-left: 5px; fill: #1d9bf0; }
+        .amount-val { font-size: 36px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        
+        /* Ticks ko pop karne ke liye drop shadow */
+        .green-tick-svg { width: 28px; height: 28px; fill: #34a853; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2)); }
+        .blue-tick { width: 24px; height: 24px; margin-left: 5px; fill: #1d9bf0; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2)); }
 
         .amount-text { color: #202124; font-size: 15px; margin-top: 5px; }
         
-        /* Exact Speech Bubble Frame for C8QsR9 */
+        /* Exact Speech Bubble */
         .msg-bubble {
             position: relative;
             background: #fff;
-            border: 1px solid #dadce0;
+            border: 2px solid #dadce0;
             border-radius: 20px;
             border-top-left-radius: 4px; 
             padding: 8px 12px;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 14px;
             margin-top: 15px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
         .msg-bubble::before {
             content: '';
             position: absolute;
-            top: -6px;
-            left: 5px;
-            width: 10px;
-            height: 10px;
+            top: -8px;
+            left: 6px;
+            width: 12px;
+            height: 12px;
             background: #fff;
-            border-left: 1px solid #dadce0;
-            border-top: 1px solid #dadce0;
+            border-left: 2px solid #dadce0;
+            border-top: 2px solid #dadce0;
             transform: rotate(45deg);
         }
         .msg-bubble i { color: #5f6368; cursor: pointer; }
 
-        .btn-row { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
-        .btn-green { background: #e6f4ea; color: #188038; border: none; padding: 10px 15px; border-radius: 20px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; }
-        .edit-link { color: #1a73e8; text-decoration: none; font-weight: 500; cursor: pointer; }
+        .btn-row { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+        .btn-green { background: #e6f4ea; color: #188038; border: none; padding: 12px 18px; border-radius: 25px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 5px rgba(24,128,56,0.2); }
+        .edit-link { color: #1a73e8; text-decoration: none; font-weight: 700; cursor: pointer; }
 
         .card-row { display: flex; justify-content: space-between; align-items: flex-start; }
         .details-left { flex: 1; }
-        .name-line { font-size: 18px; font-weight: 600; line-height: 1.4; color: #202124; display: flex; align-items: center; }
+        .name-line { font-size: 20px; font-weight: 700; line-height: 1.4; color: #202124; display: flex; align-items: center; }
         .bank-line { color: #5f6368; font-size: 14px; margin-top: 5px; }
 
-        .outline-btn { border: 1px solid #1a73e8; color: #1a73e8; background: transparent; padding: 10px 15px; border-radius: 20px; font-weight: 500; cursor: pointer; font-size: 14px; margin-top: 15px; margin-right: 10px; }
+        .outline-btn { border: 2px solid #1a73e8; color: #1a73e8; background: transparent; padding: 12px 18px; border-radius: 25px; font-weight: 700; cursor: pointer; font-size: 15px; margin-top: 15px; margin-right: 10px; transition: 0.2s; }
+        .outline-btn:hover { background: #e8f0fe; }
 
-        .avatar-to { width: 50px; height: 50px; border-radius: 50%; background: #e0f2f1; color: #000; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+        .avatar-to { width: 50px; height: 50px; border-radius: 50%; background: #e0f2f1; color: #00695c; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid #d0e8e5; }
         
-        /* Exact From Photo Frame with Shadow */
-        .avatar-from { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+        /* From Photo - Crisp White Frame and Shadow */
+        .avatar-from { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 3px 8px rgba(0,0,0,0.25); }
         
-        .footer-details { padding: 20px; border-bottom: 1px solid #f1f3f4; font-size: 14px; color: #202124; line-height: 2; }
-        .footer-details a { color: #1a73e8; text-decoration: none; font-weight: 500; margin-left: 5px; cursor: pointer; }
-        .payment-details { color: #1a73e8; font-weight: 600; font-size: 15px; margin-top: 15px; display: block; cursor: pointer; }
+        .footer-details { padding: 20px; border-bottom: 1px solid #e8e8e8; font-size: 15px; color: #202124; line-height: 2.2; }
+        .footer-details a { color: #1a73e8; text-decoration: none; font-weight: 700; margin-left: 5px; cursor: pointer; }
+        .payment-details { color: #1a73e8; font-weight: 700; font-size: 16px; margin-top: 15px; display: block; cursor: pointer; }
         .payment-details i { margin-left: 5px; font-size: 12px; }
         
         .footer-logos { text-align: center; padding: 20px; font-size: 12px; color: #5f6368; display: flex; justify-content: center; align-items: center; gap: 10px; }
         .upi-bold { font-weight: bold; color: #202124; }
 
-        /* Hidden Edit Form (Sirf From wale ke liye) */
-        #editFromForm { display: none; background: #f8f9fa; padding: 15px; margin-top: 15px; border-radius: 8px; }
+        #editFromForm { display: none; background: #f8f9fa; padding: 15px; margin-top: 15px; border-radius: 8px; border: 1px solid #e0e0e0; }
         #editFromForm label { display: block; font-size: 13px; color: #5f6368; margin-bottom: 5px; }
         #editFromForm input { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
         #editFromForm button { background: #1a73e8; color: #fff; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
@@ -92,7 +97,6 @@
         <div class="header-actions">Share Help</div>
     </div>
 
-    <!-- Top Section (Bilkul Screenshot Jaisa) -->
     <div class="section">
         <div class="label">Amount</div>
         <div class="amount-row">
@@ -110,7 +114,6 @@
         </div>
     </div>
 
-    <!-- To Section (Bilkul Screenshot Jaisa) -->
     <div class="section">
         <div class="label">To</div>
         <div class="card-row">
@@ -132,7 +135,6 @@
         </div>
     </div>
 
-    <!-- From Section (Edit Form Yahan Khulega) -->
     <div class="section">
         <div class="label">From</div>
         <div class="card-row">
@@ -152,13 +154,11 @@
                 </div>
             </div>
             <div class="details-right">
-                <!-- User can change this URL to their own photo in edit -->
                 <img src="https://i.pravatar.cc/150?img=11" class="avatar-from" id="fromAvatar" alt="User">
             </div>
         </div>
     </div>
 
-    <!-- Footer Details -->
     <div class="footer-details">
         Paid at: <span id="paidTime">Loading...</span><br>
         UPI Ref No: <span id="utrNumber">31XXXXXXXXXX</span> <a href="#">Copy</a>
@@ -171,7 +171,6 @@
 </div>
 
 <script>
-    // Automation: Amount words (100 = One Hundred)
     function numberToWords(num) {
         if (num === 0) return 'Zero';
         const a = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
@@ -182,12 +181,10 @@
         return 'Too Large';
     }
 
-    // Automation: UTR hamesha 31 se start
     function generateUtr() {
         return '31' + Math.floor(1000000000 + Math.random() * 9000000000);
     }
 
-    // Automation: Current Time
     function updateTime() {
         const now = new Date();
         let hours = now.getHours();
@@ -204,7 +201,6 @@
         document.getElementById('paidTime').innerText = updateTime();
     };
 
-    // Sirf From Section Edit Functions
     function toggleEditFrom() {
         var form = document.getElementById('editFromForm');
         if (form.style.display === 'block') {
